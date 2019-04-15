@@ -10,8 +10,11 @@ const render = require('koa-ejs');
 const querystring = require('querystring');
 
 // Get the configured port and let it be known which is assigned
+const host = process.env.HOST || 'localhost';
 const port = process.env.PORT || 5000;
+const dummyPass = process.env.DUMMY_PASS || '--dummy--pass--';
 console.log(`Fake Auth app will listen on port ${port}`);
+console.log(`Fake Auth app will listen on host ${host}`);
 
 const app = koa();
 
@@ -31,7 +34,7 @@ app.keys = [
 // This is the OIDC provider class
 const Provider = require('oidc-provider').Provider;
 
-const issuer = `http://localhost:${port}/op`;
+const issuer = `http://${host}:${port}/op`;
 
 // All configuration comes from here.
 // Clients and certificates are defined in ./config/clients.js and ./config/certificates.js, respectively
@@ -87,6 +90,10 @@ router.get('/interaction/:grant', function * renderInteraction(next) {
 // This is the route that handles login form submission and authorisation
 router.post('/login', body(), function * submitLoginForm() {
     console.log(this.request.body);
+    console.log(this.request.body.password);
+    if (dummyPass !== this.request.body.password) {
+      throw new Error('Passowrd Invalid!');
+    }
     const account = yield Account.findByLogin(this.request.body.login);
 
     const result = {
