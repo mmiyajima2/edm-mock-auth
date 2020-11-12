@@ -15,7 +15,7 @@
   "author": "Jason Rigby <Jason.Rigby@monash.edu>",
   "license": "ISC",
   "engines": {
-    "node": "8.10.0"
+    "node": "*"
   },
   "dependencies": {
     "foreman": "2.0.0",

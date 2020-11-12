@@ -1,13 +1,14 @@
 'use strict';
 
 
-const redirect_uri = process.env.REDIRECT_URI || 'http://127.0.0.1:4000/auth/edm_auth/callback'
-console.log(redirect_uri);
+const redirectUri = process.env.REDIRECT_URI || 'http://127.0.0.1:4000/auth/edm_auth/callback'
+const clientId = process.env.CLIENT_ID || 'hogehoge'
+const clientSecret = process.env.CLIENT_SECRET || 'fugafuga'
 
 module.exports = [{
-    client_id: 'oidcCLIENT',
-    client_secret: '91c0fabd17a9db3cfe53f28a10728e39b7724e234ecd78dba1fb05b909fb4ed98c476afc50a634d52808ad3cb2ea744bc8c3b45b7149ec459b5c416a6e8db242',
+    client_id: clientId,
+    client_secret: clientSecret,
     grant_types: ['client_credentials', 'refresh_token', 'authorization_code'],
-    redirect_uris: [redirect_uri],
+    redirect_uris: [redirectUri],
     token_endpoint_auth_method: 'client_secret_post'
 }];
