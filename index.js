@@ -53,6 +53,26 @@ app.use(mount('/op', oidc.app));
 
 const router = new Router();
 
+router.get('/session-reset', function* sessionReset(next) {
+  const client = {};
+  this.cookies.set('sessionid', '');
+  this.cookies.set('_session', '');
+  this.cookies.set('_session.sig', '');
+  this.cookies.set('_session_states', '');
+  this.cookies.set('_session_states.sig', '');
+  this.cookies.set('csrftoken', '');
+  const cookie = {};
+  console.log(this.cookies);
+  yield this.render('session-reset', {
+    client,
+    cookie,
+    title: 'end',
+    debug: {},
+    interaction: {},
+  });
+  yield next;
+});
+
 // This is the route that is used after the /op/auth endpoint is touched. It displays the login prompt.
 router.get('/interaction/:grant', function * renderInteraction(next) {
     const cookie = JSON.parse(this.cookies.get('_grant', { signed: true }));
